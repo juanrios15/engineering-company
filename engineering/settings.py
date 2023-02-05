@@ -11,19 +11,32 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import json
+
+from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+with open('secret.json') as f:
+        secret = json.loads(f.read())
+
+def get_secret(secret_name,secrets=secret):
+    try:
+        return secrets[secret_name]
+
+    except:
+        msg="La variable %s no existe" % secret_name
+        return ImproperlyConfigured(msg)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-#spp95oh5)r$*mbnjh4povq(fbbyzmj5j^$1ei6htw0a3hzyu_"
+SECRET_KEY = get_secret('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = get_secret('DEBUG')
 
 ALLOWED_HOSTS = []
 
@@ -37,6 +50,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    'rest_framework',
+    "apps.users",
 ]
 
 MIDDLEWARE = [
@@ -74,12 +89,16 @@ WSGI_APPLICATION = "engineering.wsgi.application"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'OPTIONS': {
+            'service': 'engineeringdb',
+            'passfile': '.my_pgpass',
+        },
     }
 }
 
+AUTH_USER_MODEL = 'users.user'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
