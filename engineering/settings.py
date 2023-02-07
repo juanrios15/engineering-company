@@ -51,7 +51,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     'rest_framework',
+    'rest_framework.authtoken',
     "apps.users",
+    "apps.companies",
 ]
 
 MIDDLEWARE = [
@@ -92,10 +94,11 @@ WSGI_APPLICATION = "engineering.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'OPTIONS': {
-            'service': 'engineeringdb',
-            'passfile': '.my_pgpass',
-        },
+        'NAME': get_secret('DBNAME'),
+        'USER': get_secret('DBUSER'),
+        'PASSWORD': get_secret('DBPASSWORD'),
+        'HOST': get_secret('DBHOST'),
+        'PORT': get_secret('DBPORT'),
     }
 }
 

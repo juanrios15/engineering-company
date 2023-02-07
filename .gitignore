@@ -3,6 +3,7 @@
 /static/
 *.sqlite3
 secret.json
+/thunder-tests/
 
 __pycache__
 *.pyc
