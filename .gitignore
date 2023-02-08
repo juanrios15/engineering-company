@@ -10,3 +10,4 @@ __pycache__
 .env
 .pg_service.conf
 .my_pgpass
+pendientes.txt

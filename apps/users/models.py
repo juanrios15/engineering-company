@@ -5,11 +5,12 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 
-from apps.companies.models import Company
+from apps.companies.models import Company, CompanyRole
 
 
 class User(AbstractUser):
     company = models.ForeignKey(Company, on_delete=models.PROTECT, null=True, blank=True)
+    company_role = models.ForeignKey(CompanyRole, on_delete=models.PROTECT, null=True, blank=True)
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
