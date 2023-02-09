@@ -1,3 +1,5 @@
+import os
+
 from django.db import models
 
 
@@ -23,9 +25,13 @@ class Currency(models.Model):
         return str(self.name)
 
 
+def content_file_name(instance, filename):
+    return os.path.join("logos", filename)
+
+
 class Company(models.Model):
     name = models.CharField(max_length=150)
-    logo = models.ImageField(upload_to=None, height_field=None, width_field=None, max_length=None)
+    logo = models.FileField(upload_to=content_file_name, null=True, blank=True)
     currency = models.ForeignKey(Currency, on_delete=models.PROTECT)
 
     class Meta:
