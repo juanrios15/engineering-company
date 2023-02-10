@@ -15,21 +15,22 @@ class BaseModel(models.Model):
     original_objects = models.Manager()
 
     active = models.BooleanField(default=True)
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name="created_by", null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
-    updated_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    updated_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name="updated_by", null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True)
-    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True)
 
     class Meta:
         abstract = True
 
     def save(self, *args, **kwargs):
         self.audit()
+        self.active = True
         super(BaseModel, self).save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
-        self.activo = False
+        self.active = False
         self.audit()
         super(BaseModel, self).save(*args, **kwargs)
 

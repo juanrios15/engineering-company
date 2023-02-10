@@ -22,4 +22,5 @@ urlpatterns = [
     path('api-token-auth/', views.obtain_auth_token),
     path('companies/', include('apps.companies.urls', namespace='companies')),
     path('users/', include('apps.users.urls', namespace='users')),
+    path('invitations/', include('apps.invitations.urls', namespace='invitations')),
 ]
