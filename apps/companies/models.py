@@ -4,6 +4,9 @@ from django.db import models
 
 
 class CompanyRole(models.Model):
+    ADMIN = 1
+    EDITOR = 2
+    BASIC = 3
     role = models.CharField(max_length=50)
     description = models.CharField(max_length=250, null=True, blank=True)
 
@@ -36,6 +39,15 @@ class Company(models.Model):
 
     class Meta:
         verbose_name_plural = "Companies"
+
+    def __str__(self):
+        return str(self.name)
+
+
+class JoinRequest(models.Model):
+    name = models.CharField(max_length=150)
+    email = models.EmailField(max_length=255)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.name)
